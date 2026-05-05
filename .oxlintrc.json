@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oxc-project/oxc/main/npm/oxlint/configuration_schema.json",
+  "jsPlugins": ["./lint/aolda-plugin.js"],
+  "plugins": ["eslint", "typescript"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "aolda/no-cross-package-imports": "error",
+    "aolda/no-primitive-colors": "error",
+    "aolda/no-tailwind-dark-variant": "error"
+  }
+}

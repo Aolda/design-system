@@ -1,0 +1,267 @@
+@import "./theme-aolda.css";
+@import "./theme-fedramp.css";
+
+@theme {
+  /* Aolda primitive palette */
+  --color-aolda-white: #ffffff;
+  --color-aolda-black: #181818;
+
+  --color-aolda-primary-900: #051c2e;
+  --color-aolda-primary-800: #0a395c;
+  --color-aolda-primary-700: #105589;
+  --color-aolda-primary-600: #1572b8;
+  --color-aolda-primary-500: #1a8ee5;
+  --color-aolda-primary-400: #48a4ea;
+  --color-aolda-primary-300: #76bbef;
+  --color-aolda-primary-200: #a3d2f5;
+  --color-aolda-primary-100: #d1e8fa;
+  --color-aolda-primary-50: #e8f4fc;
+
+  --color-aolda-secondary-900: #131720;
+  --color-aolda-secondary-800: #252d41;
+  --color-aolda-secondary-700: #384461;
+  --color-aolda-secondary-600: #4a5b82;
+  --color-aolda-secondary-500: #5d72a2;
+  --color-aolda-secondary-400: #7d8eb5;
+  --color-aolda-secondary-300: #9eaac7;
+  --color-aolda-secondary-200: #bec6da;
+  --color-aolda-secondary-100: #dfe3ec;
+  --color-aolda-secondary-50: #eff1f6;
+
+  --color-aolda-gray-900: #232527;
+  --color-aolda-gray-800: #444444;
+  --color-aolda-gray-700: #636363;
+  --color-aolda-gray-600: #777777;
+  --color-aolda-gray-500: #a0a0a0;
+  --color-aolda-gray-400: #bfbfbf;
+  --color-aolda-gray-300: #e2e2e2;
+  --color-aolda-gray-200: #efefef;
+  --color-aolda-gray-100: #f5f5f5;
+  --color-aolda-gray-50: #fafafa;
+
+  --color-aolda-status-negative: #e15651;
+  --color-aolda-status-warning: #f7c96e;
+  --color-aolda-status-positive: #44bba1;
+}
+
+/* Typography is now generated in theme-aolda.css via codegen:themes */
+
+@theme {
+  /* Easings & transitions */
+  --ease-bounce: cubic-bezier(0.2, 0, 0, 1.5);
+  --default-transition-duration: 100ms;
+
+  /* Animation */
+  --animate-refresh: refresh 0.5s ease-in-out infinite;
+  --animate-right: right 15s linear infinite;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  [data-mode="dark"] {
+    color-scheme: dark;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* "spinner" = up and down arrows on number inputs */
+  .no-input-spinner {
+    appearance: textfield;
+
+    ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+      appearance: none;
+    }
+  }
+
+  /* Link current variant decoration - different opacities for light/dark */
+  .link-current {
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+  }
+
+  [data-mode="dark"] .link-current {
+    text-decoration-color: color-mix(in oklch, currentColor 65%, transparent);
+  }
+
+  .link-current:hover {
+    text-decoration-color: currentColor;
+  }
+
+  /* External link icon stroke width - thicker in dark mode for visibility */
+  .link-external-icon {
+    stroke-width: 1.75;
+  }
+
+  [data-mode="dark"] .link-external-icon {
+    stroke-width: 2;
+  }
+}
+
+@keyframes right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.float {
+  animation: float 5s linear infinite alternate;
+}
+
+@keyframes float {
+  to {
+    transform: translate(5px, 15px);
+  }
+}
+
+@keyframes refresh {
+  to {
+    transform: rotate(360deg) scale(0.9);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.4s ease-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Chart wave-loader animation: slides the SVG path left by one full period,
+   creating a seamless looping sine wave. Used by TimeseriesChart loading state. */
+@keyframes aolda-chart-wave {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-400px);
+  }
+}
+
+@keyframes toast-bump {
+  0% {
+    transform: scale(1);
+  }
+
+  20% {
+    transform: scale(1.02);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-toast-bump {
+  animation: toast-bump 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+
+@layer base {
+  .skeleton-line {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    height: 0.5rem;
+    width: var(--skeleton-width);
+    background-color: #f3f4f6;
+    /* neutral-100 for light mode */
+  }
+
+  .skeleton-line::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    animation: shimmer var(--shimmer-duration, 1.5s) var(--shimmer-delay, 0s)
+      infinite ease-in-out;
+    content: "";
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  [data-mode="dark"] .skeleton-line {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  [data-mode="dark"] .skeleton-line::after {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+  }
+}
+
+/* Popup outline offset - in dark mode, offset inward to align with inner stroke.
+   This compensates for the different geometry of inner vs outer stroke paths.
+   Used by: Tooltip, Popover
+   See: https://base-ui.com/react/components/tooltip */
+[data-mode="dark"] .aolda-tooltip-popup,
+[data-mode="dark"] .aolda-popover-popup {
+  outline-offset: -1px;
+}
+
+/* Input placeholder color - vanilla CSS to avoid Tailwind parsing issues */
+.aolda-input-placeholder::placeholder {
+  color: var(--text-color-aolda-placeholder);
+}
+
+/* InputGroup container mode — native browser outline on keyboard focus.
+   Uses vanilla CSS because Tailwind focus-visible: targets the focused element itself,
+   but we need :has(:focus-visible) to outline the container when a descendant is focused. */
+[data-slot="input-group"][data-focus-mode="container"]:has(:focus-visible) {
+  /* 1px solid matches the browser's default focus ring weight */
+  outline: solid 1px var(--color-aolda-focus);
+}
+
+/* InputGroup hybrid mode — keyboard outline for the container zone wrapper.
+   Uses outline-offset: -1px to sit on top of the 1px border (same as individual mode)
+   so there's no double visual indicator between the outline and the border. */
+[data-slot="input-group-container-zone"]:has(:focus-visible) {
+  /* 1px to match the individual-mode outline weight (thinner than container's 2px
+     because the zone is nested — a thick outline would overwhelm sibling buttons) */
+  outline: solid 1px var(--color-aolda-focus);
+  outline-offset: -1px;
+}

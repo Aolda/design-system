@@ -1,0 +1,201 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Installation"
+description: "Get started with Aolda by installing the package and importing components."
+---
+
+import Callout from "~/components/docs/Callout.astro";
+
+export const aoldaVersion =
+  typeof __AOLDA_VERSION__ !== "undefined" ? __AOLDA_VERSION__ : "latest";
+
+## NPM Registry
+
+The `@aolda/ui` package is published to the public npm registry. No special configuration is required for installation.
+
+## Install Package
+
+Install Aolda using your preferred package manager. The current version is <code>v{aoldaVersion}</code>.
+
+#### npm
+
+```bash
+npm install @aolda/ui
+```
+
+#### pnpm
+
+```bash
+pnpm add @aolda/ui
+```
+
+#### yarn
+
+```bash
+yarn add @aolda/ui
+```
+
+#### Peer Dependencies
+
+Aolda requires the following peer dependencies. Most React projects will already have these installed:
+
+```bash
+# Required peer dependencies
+pnpm add react react-dom @phosphor-icons/react
+```
+
+## Import Components
+
+Import components from the main package or use granular imports for better tree-shaking:
+
+#### Main Package Import
+
+```tsx
+import { Button, Input, LayerCard } from "@aolda/ui";
+```
+
+#### Granular Import (Recommended)
+
+```tsx
+import { Button } from "@aolda/ui/components/button";
+import { Input } from "@aolda/ui/components/input";
+```
+
+## Base UI Primitives
+
+Aolda is built on top of [Base UI](https://base-ui.com), a library of unstyled, accessible React components. For advanced use cases where you need access to the underlying primitives, Aolda re-exports all 37 Base UI components with both barrel and granular imports:
+
+#### Barrel Import (Convenient)
+
+```tsx
+// Import multiple primitives at once
+import { Popover, Slider, Accordion } from "@aolda/ui/primitives";
+```
+
+#### Granular Imports (Recommended for Performance)
+
+```tsx
+// Import individual primitives for better tree-shaking
+import { Popover } from "@aolda/ui/primitives/popover";
+import { Slider } from "@aolda/ui/primitives/slider";
+import { Accordion } from "@aolda/ui/primitives/accordion";
+```
+
+Granular imports result in smaller bundle sizes by only including the primitives you actually use.
+
+<Callout type="info">
+  **Available Primitives (37 total):** Layout · Accordion, Collapsible,
+  Separator, ScrollArea, Toolbar — Overlays · AlertDialog, Dialog, Popover,
+  PreviewCard, Tooltip, Toast — Menus · Menu, Menubar, ContextMenu,
+  NavigationMenu — Form Controls · Autocomplete, Button, Checkbox,
+  CheckboxGroup, Combobox, Input, NumberField, Radio, RadioGroup, Select,
+  Slider, Switch, Toggle, ToggleGroup — Form Structure · Field, Fieldset, Form —
+  Display · Avatar, Meter, Progress, Tabs
+</Callout>
+
+<Callout type="warning">
+  **Note:** Prefer using styled Aolda components when available. Primitives are
+  intended for building custom components that aren't yet available in Aolda, or
+  for cases requiring fine-grained control over styling and behavior.
+</Callout>
+
+## Import Styles
+
+Aolda provides two CSS distribution options depending on your setup:
+
+### For Tailwind CSS Users (Recommended)
+
+If your application uses Tailwind CSS, add Aolda's source files to your content configuration and import the styles. **Import order matters** — Aolda styles must come before `@import "tailwindcss"` so that Aolda's theme tokens are registered first:
+
+<Callout type="warning">
+  **Important:** Tailwind CSS v4 does not scan `node_modules/` by default. You
+  must add a `@source` directive so Tailwind can discover the utility classes
+  used by Aolda components. Without this, components may render with missing
+  styles (e.g. Dialogs not centered).
+</Callout>
+
+```css
+/* app.css or main.css */
+@source "../node_modules/@aolda/ui/dist/**/*.{js,jsx,ts,tsx}";
+@import "@aolda/ui/styles/tailwind";
+@import "tailwindcss";
+
+/* Your custom styles */
+```
+
+<Callout type="info">
+  The `@source` path is relative to your CSS file. Adjust it based on your
+  project structure — e.g. if your CSS is in `src/styles/`, you may need
+  `../../node_modules/@aolda/ui/dist/**/*.{"{"}js,jsx,ts,tsx{"}"}`.
+</Callout>
+
+Note: You can also use the default export `@aolda/ui/styles` which is equivalent to `styles/tailwind`.
+
+### For Non-Tailwind Users (Standalone)
+
+If your application doesn't use Tailwind CSS, use the standalone build which includes all compiled styles:
+
+```tsx
+// In your app entry point (e.g., main.tsx, index.tsx)
+import "@aolda/ui/styles/standalone";
+```
+
+The standalone build includes all Tailwind utilities and Aolda component styles pre-compiled. No Tailwind configuration needed!
+
+## Usage Example
+
+Here's a complete example of using Aolda components with Tailwind CSS:
+
+#### CSS File (app.css)
+
+```css
+@source "../node_modules/@aolda/ui/dist/**/*.{js,jsx,ts,tsx}";
+@import "@aolda/ui/styles/tailwind";
+@import "tailwindcss";
+```
+
+Note: The `@source` path is relative to your CSS file. Adjust it based on your project structure.
+
+#### Component File (App.tsx)
+
+```tsx
+import { Button, Input, LayerCard } from "@aolda/ui";
+import "./app.css";
+
+export default function App() {
+  return (
+    <LayerCard className="rounded-lg p-6">
+      <h1 className="mb-4 text-2xl font-bold">Welcome to Aolda</h1>
+      <Input placeholder="Enter your name..." className="mb-4" />
+      <Button variant="primary">Submit</Button>
+    </LayerCard>
+  );
+}
+```
+
+## Components
+
+Components are published as NPM exports and can be imported directly from the package. These are the core UI primitives like `Button`, `Input`, and `Dialog`.
+
+```tsx
+import { Button, Input, Dialog } from "@aolda/ui";
+```
+
+Use components when you need consistent, pre-styled UI primitives that integrate seamlessly with your application. Components are versioned, tree-shakeable, and receive automatic updates.
+
+## Utilities
+
+Aolda also exports utility functions for common tasks:
+
+```tsx
+import { cn, safeRandomId, LinkProvider } from "@aolda/ui";
+
+// Merge class names with Tailwind
+const className = cn("base-class", condition && "conditional-class");
+
+// Generate safe random IDs
+const id = safeRandomId();
+
+// Configure link component for your framework
+<LinkProvider component={YourLinkComponent}>{/* Your app */}</LinkProvider>;
+```

@@ -1,0 +1,212 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "AoldaLogo"
+description: "Aolda logo component and attribution badge."
+sourceFile: "components/aolda-logo"
+---
+
+import ComponentExample from "~/components/docs/ComponentExample.astro";
+import ComponentSection from "~/components/docs/ComponentSection.astro";
+import {
+  AoldaLogoBasicDemo,
+  AoldaLogoFullDemo,
+  AoldaLogoSizesDemo,
+  AoldaLogoCopyDemo,
+  PoweredByAoldaBasicDemo,
+  PoweredByAoldaFooterDemo,
+} from "~/components/demos/AoldaLogoDemo";
+
+{/* Hero Demo */}
+
+<ComponentSection>
+  <ComponentExample demo="AoldaLogoBasicDemo">
+    <AoldaLogoBasicDemo client:visible />
+  </ComponentExample>
+</ComponentSection>
+
+{/* Installation */}
+
+<ComponentSection>
+
+## Installation
+
+### Barrel
+
+```tsx
+import {
+  AoldaLogo,
+  PoweredByAolda,
+  generateAoldaLogoSvg,
+} from "@aolda/ui";
+```
+
+### Granular
+
+```tsx
+import {
+  AoldaLogo,
+  PoweredByAolda,
+  generateAoldaLogoSvg,
+} from "@aolda/ui/components/aolda-logo";
+```
+
+</ComponentSection>
+
+{/* Usage */}
+
+<ComponentSection>
+
+## Usage
+
+```tsx
+import { AoldaLogo } from "@aolda/ui";
+
+export default function Example() {
+  return <AoldaLogo className="size-12" />;
+}
+```
+
+</ComponentSection>
+
+{/* Examples */}
+
+<ComponentSection>
+
+## Examples
+
+### Full Logo
+
+<p>
+  Use <code>variant="full"</code> to display the logomark with the Aolda wordmark.
+</p>
+<ComponentExample demo="AoldaLogoFullDemo">
+  <AoldaLogoFullDemo client:visible />
+</ComponentExample>
+
+### Sizing
+
+<p>
+  Size the mark using CSS width, height, or size classes. Size the full logo by
+  width and let the height follow its aspect ratio.
+</p>
+<ComponentExample demo="AoldaLogoSizesDemo">
+  <AoldaLogoSizesDemo client:visible />
+</ComponentExample>
+
+### Brand Assets Menu
+
+  <p>
+    Combine with DropdownMenu to create a brand assets menu. Use <code>generateAoldaLogoSvg()</code> to
+    get copy-paste ready SVG markup.
+  </p>
+  <ComponentExample demo="AoldaLogoCopyDemo">
+    <AoldaLogoCopyDemo client:visible />
+  </ComponentExample>
+</ComponentSection>
+
+{/* PoweredByAolda */}
+
+<ComponentSection>
+
+## PoweredByAolda
+
+  <p>
+    A pre-built "Powered by Aolda" badge component for footers and attribution.
+  </p>
+
+### Basic Usage
+
+<ComponentExample demo="PoweredByAoldaBasicDemo">
+  <PoweredByAoldaBasicDemo client:visible />
+</ComponentExample>
+
+### Footer Example
+
+  <ComponentExample demo="PoweredByAoldaFooterDemo">
+    <PoweredByAoldaFooterDemo client:visible />
+  </ComponentExample>
+</ComponentSection>
+
+{/* SVG Generation */}
+
+<ComponentSection>
+
+## SVG Generation
+
+  <p>
+    Use <code>generateAoldaLogoSvg()</code> to get copy-paste ready SVG markup for non-React contexts.
+  </p>
+
+```tsx
+import { generateAoldaLogoSvg } from "@aolda/ui";
+
+const logoSvg = generateAoldaLogoSvg();
+const fullLogoSvg = generateAoldaLogoSvg({ variant: "full" });
+
+await navigator.clipboard.writeText(logoSvg);
+```
+
+</ComponentSection>
+
+{/* API Reference */}
+
+<ComponentSection>
+
+## API Reference
+
+  <p>
+    AoldaLogo extends <code>SVGSVGElement</code> and accepts all standard SVG attributes.
+  </p>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead>
+        <tr class="border-b border-aolda-hairline">
+          <th class="py-3 pr-4 font-medium">Prop</th>
+          <th class="py-3 pr-4 font-medium">Type</th>
+          <th class="py-3 pr-4 font-medium">Default</th>
+          <th class="py-3 font-medium">Description</th>
+        </tr>
+      </thead>
+      <tbody class="text-aolda-subtle">
+        <tr class="border-b border-aolda-hairline">
+          <td class="py-3 pr-4 font-mono text-aolda-default">variant</td>
+          <td class="py-3 pr-4 font-mono">"mark" | "full"</td>
+          <td class="py-3 pr-4 font-mono">"mark"</td>
+          <td class="py-3">Logo variant. <code>mark</code> shows the circular logomark, <code>full</code> includes the wordmark.</td>
+        </tr>
+        <tr>
+          <td class="py-3 pr-4 font-mono text-aolda-default">className</td>
+          <td class="py-3 pr-4 font-mono">string</td>
+          <td class="py-3 pr-4 font-mono">-</td>
+          <td class="py-3">CSS classes for sizing, spacing, and layout.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+### PoweredByAolda
+
+  <p>
+    Extends <code>HTMLAnchorElement</code> and accepts all standard anchor attributes.
+  </p>
+  <div class="overflow-x-auto">
+    <table class="w-full text-left text-sm">
+      <thead>
+        <tr class="border-b border-aolda-hairline">
+          <th class="py-3 pr-4 font-medium">Prop</th>
+          <th class="py-3 pr-4 font-medium">Type</th>
+          <th class="py-3 pr-4 font-medium">Default</th>
+          <th class="py-3 font-medium">Description</th>
+        </tr>
+      </thead>
+      <tbody class="text-aolda-subtle">
+        <tr>
+          <td class="py-3 pr-4 font-mono text-aolda-default">href</td>
+          <td class="py-3 pr-4 font-mono">string</td>
+          <td class="py-3 pr-4 font-mono">"https://aolda.com"</td>
+          <td class="py-3">Link destination. Opens in a new tab by default.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ComponentSection>

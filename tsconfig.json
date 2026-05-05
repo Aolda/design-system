@@ -1,0 +1,8 @@
+{
+  "files": [],
+  "references": [{ "path": "./packages/ui" }],
+  "compilerOptions": {
+    "composite": true,
+    "skipLibCheck": true
+  }
+}

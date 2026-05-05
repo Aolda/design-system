@@ -1,0 +1,109 @@
+name: Pull Request
+
+on:
+  pull_request:
+    paths-ignore:
+      - "*.md"
+      - ".changeset/**"
+  # Also trigger on push to PR branches (for bots that push via API)
+  push:
+    branches:
+      - "opencode/**"
+    paths-ignore:
+      - "*.md"
+      - ".changeset/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  changeset:
+    timeout-minutes: 2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/install-dependencies
+      - run: pnpm tsx ci/scripts/validate-ui-changeset.ts
+
+  build:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/install-dependencies
+      - run: pnpm --filter @aolda/ui build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aolda-dist
+          path: packages/ui/dist
+          retention-days: 1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: aolda-registry
+          path: packages/ui/registry
+          retention-days: 1
+
+  lint:
+    needs: build
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/install-dependencies
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-dist
+          path: packages/ui/dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-registry
+          path: packages/ui/registry
+      - run: pnpm lint
+
+  typecheck:
+    needs: build
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/install-dependencies
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-dist
+          path: packages/ui/dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-registry
+          path: packages/ui/registry
+      - run: pnpm typecheck
+
+  test:
+    needs: build
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ./.github/actions/install-dependencies
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-dist
+          path: packages/ui/dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: aolda-registry
+          path: packages/ui/registry
+      - run: pnpm --filter @aolda/ui test

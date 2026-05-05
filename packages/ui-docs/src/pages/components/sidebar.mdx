@@ -1,0 +1,275 @@
+---
+layout: ~/layouts/MdxDocLayout.astro
+title: "Sidebar"
+description: "A composable sidebar navigation component with collapsible groups, icon-only mode, and responsive mobile support."
+sourceFile: "components/sidebar"
+---
+
+import ComponentSection from "~/components/docs/ComponentSection.astro";
+import ComponentExample from "~/components/docs/ComponentExample.astro";
+import PropsTable from "~/components/docs/PropsTable.astro";
+import {
+  SidebarBasicDemo,
+  SidebarCollapsibleGroupDemo,
+  SidebarToggleDemo,
+  SidebarFullDemo,
+  SidebarResizableDemo,
+  SidebarRightDemo,
+} from "~/components/demos/SidebarDemo";
+
+<ComponentSection>
+  <ComponentExample code={`<Sidebar.Provider defaultOpen>
+  <Sidebar>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Overview</Sidebar.GroupLabel>
+        <Sidebar.Menu>
+          <Sidebar.MenuButton icon={HouseIcon} active>Home</Sidebar.MenuButton>
+          <Sidebar.MenuButton icon={GlobeIcon}>Domains</Sidebar.MenuButton>
+        </Sidebar.Menu>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar>
+</Sidebar.Provider>`}>
+    <SidebarFullDemo client:load />
+  </ComponentExample>
+</ComponentSection>
+
+<ComponentSection>
+
+## Installation
+
+### Barrel
+
+```tsx
+import { Sidebar } from "@aolda/ui";
+```
+
+### Granular
+
+```tsx
+import { Sidebar } from "@aolda/ui/components/sidebar";
+```
+
+</ComponentSection>
+
+<ComponentSection>
+
+## Usage
+
+At minimum you need `Provider`, `Sidebar`, `Content` (scrollable area), `Menu`, and `MenuButton`.
+Add `Header` / `Footer` to pin content above or below the scroll area.
+Use `Group` + `GroupLabel` to organize sections.
+
+```tsx
+import { Sidebar } from "@aolda/ui";
+import { HouseIcon, CodeIcon, GearIcon } from "@phosphor-icons/react";
+
+function AppLayout({ children }) {
+  return (
+    <Sidebar.Provider defaultOpen>
+      <Sidebar>
+        <Sidebar.Content>
+          <Sidebar.Group>
+            <Sidebar.GroupLabel>Navigation</Sidebar.GroupLabel>
+            <Sidebar.Menu>
+              <Sidebar.MenuButton icon={HouseIcon} active>
+                Home
+              </Sidebar.MenuButton>
+              {/* MenuItem only needed to wrap Collapsible or MenuAction */}
+              <Sidebar.MenuItem>
+                <Sidebar.Collapsible>
+                  <Sidebar.CollapsibleTrigger
+                    render={
+                      <Sidebar.MenuButton icon={CodeIcon}>
+                        Compute <Sidebar.MenuChevron />
+                      </Sidebar.MenuButton>
+                    }
+                  />
+                  <Sidebar.CollapsibleContent>
+                    <Sidebar.MenuSub>
+                      <Sidebar.MenuSubButton>Workers</Sidebar.MenuSubButton>
+                    </Sidebar.MenuSub>
+                  </Sidebar.CollapsibleContent>
+                </Sidebar.Collapsible>
+              </Sidebar.MenuItem>
+            </Sidebar.Menu>
+          </Sidebar.Group>
+        </Sidebar.Content>
+        <Sidebar.Footer>
+          <Sidebar.MenuButton icon={GearIcon}>Settings</Sidebar.MenuButton>
+        </Sidebar.Footer>
+      </Sidebar>
+      <main className="flex-1">{children}</main>
+    </Sidebar.Provider>
+  );
+}
+```
+
+</ComponentSection>
+
+<ComponentSection>
+
+## Examples
+
+### Basic
+
+The minimum viable sidebar: just groups, menu buttons, and collapsible sub-menus. No header or footer.
+`MenuButton` and `MenuSubButton` auto-wrap in `<li>`; no `MenuItem` / `MenuSubItem` needed.
+
+<ComponentExample code={`<Sidebar.Provider defaultOpen>
+  <Sidebar>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Overview</Sidebar.GroupLabel>
+        <Sidebar.Menu>
+          <Sidebar.MenuButton icon={HouseIcon} active>Home</Sidebar.MenuButton>
+          <Sidebar.MenuButton icon={ChartBarIcon}>Analytics</Sidebar.MenuButton>
+        </Sidebar.Menu>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar>
+</Sidebar.Provider>`}>
+  <SidebarBasicDemo client:load />
+</ComponentExample>
+
+### Collapsible Groups
+
+Add `collapsible` to a `Group` and wrap the `Menu` in `GroupContent` to enable animated expand/collapse via the group label.
+
+<ComponentExample code={`<Sidebar.Group collapsible defaultOpen>
+  <Sidebar.GroupLabel>Overview</Sidebar.GroupLabel>
+  <Sidebar.GroupContent>
+    <Sidebar.Menu>
+      <Sidebar.MenuButton icon={HouseIcon} active>Home</Sidebar.MenuButton>
+    </Sidebar.Menu>
+  </Sidebar.GroupContent>
+</Sidebar.Group>`}>
+  <SidebarCollapsibleGroupDemo client:load />
+</ComponentExample>
+
+### Toggle & Collapsed State
+
+Use `Sidebar.Trigger` in the footer or `useSidebar().toggleSidebar` programmatically. Pass `tooltip` to show labels on hover when collapsed.
+
+<ComponentExample code={`<Sidebar.MenuButton icon={HouseIcon} tooltip="Home" active>
+  Home
+</Sidebar.MenuButton>
+
+<Sidebar.Footer>
+  <Sidebar.Trigger />
+</Sidebar.Footer>
+
+// Or programmatically:
+const { toggleSidebar } = useSidebar();`}>
+  <SidebarToggleDemo client:load />
+</ComponentExample>
+
+### Full Example
+
+Kitchen sink: header with account switcher, search input, badges, collapsible sub-menus, and a footer action.
+
+<ComponentExample code={`<Sidebar>
+  <Sidebar.Header>
+    <AccountSwitcher />
+  </Sidebar.Header>
+  <Sidebar.Content>
+    <Sidebar.Input placeholder="Quick search..." shortcut="⌘K" />
+    <Sidebar.Group>
+      <Sidebar.Menu>
+        <Sidebar.MenuButton icon={LockIcon}>
+          Zero Trust
+          <Sidebar.MenuBadge>Beta</Sidebar.MenuBadge>
+        </Sidebar.MenuButton>
+      </Sidebar.Menu>
+    </Sidebar.Group>
+  </Sidebar.Content>
+  <Sidebar.Footer>
+    <Sidebar.MenuButton icon={GearIcon}>Manage account</Sidebar.MenuButton>
+  </Sidebar.Footer>
+</Sidebar>`}>
+  <SidebarFullDemo client:load />
+</ComponentExample>
+
+### Resizable
+
+Drag the edge to resize. Dragging below `minWidth` collapses; dragging outward from collapsed expands.
+
+<ComponentExample code={`<Sidebar.Provider defaultOpen resizable defaultWidth={240} minWidth={180} maxWidth={400}>
+  <Sidebar>
+    <Sidebar.Content>...</Sidebar.Content>
+    <Sidebar.ResizeHandle />
+  </Sidebar>
+</Sidebar.Provider>`}>
+  <SidebarResizableDemo client:load />
+</ComponentExample>
+
+### Right Side
+
+Use `side="right"` for a sidebar on the right edge. Place `<main>` before `<Sidebar>` in the DOM.
+
+<ComponentExample code={`<Sidebar.Provider defaultOpen side="right">
+  <main className="flex-1">...</main>
+  <Sidebar>
+    <Sidebar.Content>
+      <Sidebar.Group>
+        <Sidebar.GroupLabel>Details</Sidebar.GroupLabel>
+        <Sidebar.Menu>
+          <Sidebar.MenuButton icon={GearIcon} active>Properties</Sidebar.MenuButton>
+          <Sidebar.MenuButton icon={ChartBarIcon}>Metrics</Sidebar.MenuButton>
+        </Sidebar.Menu>
+      </Sidebar.Group>
+    </Sidebar.Content>
+  </Sidebar>
+</Sidebar.Provider>`}>
+  <SidebarRightDemo client:load />
+</ComponentExample>
+
+</ComponentSection>
+
+<ComponentSection>
+
+## API Reference
+
+### `Sidebar`
+
+The main sidebar container. Renders as `<aside>` on desktop, Dialog sheet on mobile.
+
+<PropsTable component="Sidebar" />
+
+### `Sidebar.Provider`
+
+Context provider managing expand/collapse state and mobile detection.
+
+<PropsTable component="Sidebar.Provider" />
+
+### `Sidebar.Content`
+
+Scrollable middle section (`flex-1 overflow-y-auto`). Use `Header` / `Footer` to pin content above or below this scroll area.
+
+### `Sidebar.MenuButton`
+
+Primary interactive element. Supports icons, active state, links, and auto-tooltip when collapsed.
+Auto-wraps in `<li>`; no `MenuItem` wrapper needed unless you have siblings like `MenuAction`.
+
+<PropsTable component="Sidebar.MenuButton" />
+
+### `Sidebar.MenuSubButton`
+
+Button inside a sub-menu for nested navigation.
+Auto-wraps in `<li>`; no `MenuSubItem` wrapper needed.
+
+<PropsTable component="Sidebar.MenuSubButton" />
+
+### `Sidebar.GroupContent`
+
+Animation wrapper; only needed for `collapsible` groups (provides the grid-rows height animation).
+For non-collapsible groups, place `Menu` directly inside `Group`.
+
+### `Sidebar.Input`
+
+Search trigger button styled as an input. Typically opens a command palette.
+
+<PropsTable component="Sidebar.Input" />
+
+</ComponentSection>

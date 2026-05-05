@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "aolda-docs",
+  // Set CLOUDFLARE_ACCOUNT_ID in CI for the account that owns aoldacloud.com.
+  "compatibility_date": "2025-04-04",
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "routes": [
+    { "pattern": "ui.aoldacloud.com/*", "zone_name": "aoldacloud.com" },
+  ],
+}

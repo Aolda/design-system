@@ -1,0 +1,43 @@
+{
+  "name": "aolda-workspace",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.3",
+  "engines": {
+    "node": "^24.12.0",
+    "pnpm": ">=10.21.0"
+  },
+  "scripts": {
+    "build": "pnpm --filter @aolda/ui build && pnpm --filter @aolda/ui-docs build",
+    "codegen": "pnpm --filter @aolda/ui codegen",
+    "build:all": "pnpm -r build",
+    "changeset": "tsx ci/scripts/ensure-changeset-config.ts && changeset",
+    "clean": "pnpm -r exec rm -rf dist build .astro .wrangler node_modules",
+    "dev": "pnpm codegen && pnpm --filter @aolda/ui-docs dev",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "lint": "pnpm --filter @aolda/ui lint && pnpm --filter @aolda/ui-docs lint",
+    "lockfile-check": "pnpm install --no-frozen-lockfile && git diff --exit-code pnpm-lock.yaml",
+    "preview": "pnpm --filter @aolda/ui-docs preview",
+    "release": "pnpm build:all && changeset publish",
+    "test": "pnpm --filter @aolda/ui test",
+    "test:watch": "pnpm --filter @aolda/ui test:watch",
+    "typecheck": "pnpm -r typecheck",
+    "version": "changeset version"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "lefthook",
+      "workerd"
+    ]
+  },
+  "devDependencies": {
+    "@changesets/cli": "2.29.7",
+    "@types/node": "catalog:",
+    "lefthook": "2.0.12",
+    "oxlint": "catalog:",
+    "prettier": "3.6.2",
+    "prettier-plugin-tailwindcss": "0.7.1",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}

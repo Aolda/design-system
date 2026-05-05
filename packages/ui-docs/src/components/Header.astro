@@ -1,0 +1,32 @@
+---
+import { ThemeToggle } from "./ThemeToggle";
+
+declare const __AOLDA_VERSION__: string;
+
+const aoldaVersion =
+  typeof __AOLDA_VERSION__ !== "undefined" ? __AOLDA_VERSION__ : "dev";
+---
+
+<header
+  class="sticky top-0 z-10 h-12 border-b border-aolda-hairline bg-aolda-canvas hidden md:flex"
+>
+  <div
+    class="flex min-w-0 flex-1 items-center justify-end border-r border-aolda-hairline px-4"
+  >
+    <a
+      href="https://github.com/Aolda/design-system"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-mono text-sm text-aolda-subtle transition-colors hover:text-aolda-default"
+    >
+      @aolda/ui
+      <span class="ml-1 rounded bg-aolda-control px-1.5 py-0.5 text-xs">
+        v{aoldaVersion}
+      </span>
+    </a>
+  </div>
+
+  <div class="flex w-12 shrink-0 items-center justify-center">
+    <ThemeToggle client:only="react" />
+  </div>
+</header>

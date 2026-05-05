@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@import "./aolda-binding.css";
+
+/* 
+ * Aolda Standalone CSS
+ * This file will be compiled to standard CSS for non-Tailwind applications.
+ * It includes all Tailwind utilities and Aolda component styles.
+ */
