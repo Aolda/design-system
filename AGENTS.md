@@ -105,6 +105,8 @@ pnpm --filter @aolda/ui-docs codegen:demos
 ## BUILD PIPELINE
 
 ```
+theme config → aolda codegen:themes → src/styles/theme-*.css
+
 ui-docs demos → dist/demo-metadata.json
                               ↓
 aolda codegen:registry → registry/component-registry.json

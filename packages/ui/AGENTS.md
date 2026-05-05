@@ -43,7 +43,7 @@ aolda/
 
 ### Build System
 
-- **Build**: `codegen:registry` → `vite build` → `css-build.ts`
+- **Build**: `codegen:themes` → `codegen:registry` → `vite build` → `css-build.ts`
 - **Bundled deps**: `@base-ui/react`, `clsx`, `tailwind-merge`
 - **External peers**: `react`, `react-dom`, `@phosphor-icons/react`
 - **`"use client"` banner**: injected on output chunks for RSC compatibility

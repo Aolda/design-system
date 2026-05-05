@@ -410,7 +410,7 @@
   },
   "scripts": {
     "prepublishOnly": "pnpm run build && pnpm run test:unit",
-    "build": "pnpm run codegen:registry && vite build --mode production && tsx scripts/css-build.ts",
+    "build": "pnpm run codegen:themes && pnpm run codegen:registry && vite build --mode production && tsx scripts/css-build.ts",
     "dev": "vite build --watch --mode development",
     "new:component": "plop component",
     "clean": "rm -rf dist",
