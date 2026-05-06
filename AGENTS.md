@@ -38,7 +38,7 @@ ui/
 ## ENVIRONMENT
 
 - **Node**: `^24.12.0`
-- **pnpm**: `10.22.0`
+- **pnpm**: `10.33.4`
 - **ESM-only**: `"type": "module"` throughout. No CommonJS.
 
 ## CONVENTIONS
